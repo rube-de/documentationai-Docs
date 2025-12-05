@@ -1,0 +1,160 @@
+---
+title: Getting Started
+description: Step-by-step guide to setting up and deploying your first application on Oasis Protocol
+---
+
+## Setting Up Your Development Environment
+
+Getting started with Oasis Protocol involves setting up your development environment, connecting to the network, and deploying your first confidential application. This guide walks you through the entire process.
+
+<Columns cols={3}>
+  <Card title="Network Setup" icon="globe" href="#" />
+  <Card title="SDK Installation" icon="download" href="#" />
+  <Card title="First Deployment" icon="rocket" href="#" />
+</Columns>
+
+## Prerequisites
+
+Before starting, ensure you have the following prerequisites installed on your system.
+
+<Tabs>
+  <Tab title="macOS" icon="monitor">
+    Install dependencies using Homebrew:
+    
+    ```bash
+    brew install node npm
+    brew install go
+    ```
+    
+    <Callout kind="info">Node.js version 16+ and Go 1.18+ are required for Oasis development.</Callout>
+  </Tab>
+  <Tab title="Linux" icon="terminal">
+    Install dependencies using your package manager:
+    
+    ```bash
+    sudo apt update
+    sudo apt install nodejs npm golang-go
+    ```
+  </Tab>
+  <Tab title="Windows" icon="monitor">
+    Use Chocolatey for package management:
+    
+    ```powershell
+    choco install nodejs
+    choco install golang
+    ```
+  </Tab>
+</Tabs>
+
+## Installing Oasis SDK
+
+<Steps>
+  <Step title="Initialize Project" icon="folder">
+    Create a new project directory and initialize npm:
+    
+    ```bash
+    mkdir oasis-app
+    cd oasis-app
+    npm init -y
+    ```
+  </Step>
+  <Step title="Install SDK" icon="download">
+    Install the Oasis Protocol SDK:
+    
+    ```bash
+    npm install @oasisprotocol/client
+    npm install @oasisprotocol/contract
+    ```
+  </Step>
+  <Step title="Configure Network" icon="settings">
+    Set up network configuration:
+    
+    ```javascript
+    const oasis = new OasisClient({
+      gateway: 'https://sapphire.oasis.io',
+      network: 'sapphire'
+    });
+    ```
+  </Step>
+  <Step title="Test Connection" icon="check">
+    Verify your connection to the Oasis network:
+    
+    ```javascript
+    const blockNumber = await oasis.getBlockNumber();
+    console.log('Current block:', blockNumber);
+    ```
+  </Step>
+</Steps>
+
+## Deploying Your First Contract
+
+<Expandable title="Simple Confidential Contract" default-open="true">
+  Let's deploy a simple confidential smart contract that stores encrypted data.
+  
+  <CodeGroup tabs="Solidity,JavaScript">
+    ```solidity
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.0;
+    
+    contract ConfidentialStorage {
+      mapping(address => bytes32) private data;
+      
+      function storeData(bytes32 encryptedData) external {
+        data[msg.sender] = encryptedData;
+      }
+      
+      function getData() external view returns (bytes32) {
+        return data[msg.sender];
+      }
+    }
+    ```
+    ```javascript
+    // Deploy contract
+    const contract = await oasis.deployContract({
+      bytecode: compiledBytecode,
+      abi: contractAbi,
+      confidential: true
+    });
+    
+    console.log('Contract deployed at:', contract.address);
+    
+    // Interact with contract
+    const encryptedData = oasis.encrypt('secret data');
+    await contract.storeData(encryptedData);
+    ```
+  </CodeGroup>
+</Expandable>
+
+<ExpandableGroup>
+  <Expandable title="Using ROFL" default-open="false">
+    Integrate ROFL for off-chain computations in your application.
+  </Expandable>
+  <Expandable title="Testing on Testnet" default-open="false">
+    Deploy and test your application on the Oasis testnet before mainnet.
+  </Expandable>
+</ExpandableGroup>
+
+## Next Steps
+
+<Callout kind="success">Congratulations! You've successfully deployed your first confidential application on Oasis Protocol.</Callout>
+
+Now that you have a basic setup, explore more advanced features like:
+
+- Implementing complex privacy-preserving algorithms
+- Integrating with existing Ethereum dApps
+- Using ROFL for AI computations
+- Setting up secure data sharing protocols
+
+## Troubleshooting
+
+<Steps>
+  <Step title="Check Network Connection" icon="wifi">
+    Verify your internet connection and Oasis network status.
+  </Step>
+  <Step title="Update Dependencies" icon="refresh-cw">
+    Ensure all SDK packages are up to date.
+  </Step>
+  <Step title="Review Logs" icon="file-text">
+    Check application logs for detailed error messages.
+  </Step>
+</Steps>

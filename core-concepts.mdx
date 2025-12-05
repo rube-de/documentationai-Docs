@@ -1,0 +1,113 @@
+---
+title: Core Concepts
+description: Understanding the fundamental concepts of Oasis Protocol including confidentiality, ROFL, and EVM compatibility
+---
+
+## Understanding Oasis Protocol Architecture
+
+Oasis Protocol introduces several core concepts that form the foundation of its secure and private Web3 platform. These concepts work together to provide confidentiality, scalability, and interoperability for decentralized applications.
+
+<Columns cols={2}>
+  <Card title="Confidential Computing" icon="shield" href="#" />
+  <Card title="Runtime Off-chain Logic" icon="cpu" href="#" />
+</Columns>
+
+## Confidential Computing
+
+Confidential computing is the cornerstone of Oasis Protocol. It allows computations to be performed on encrypted data without exposing the underlying information to unauthorized parties, including the cloud provider or other network participants.
+
+<Tabs>
+  <Tab title="How It Works" icon="settings">
+    Confidential computing uses hardware-based trusted execution environments (TEEs) combined with cryptographic techniques to ensure data privacy during processing.
+    
+    <Callout kind="info">All Oasis Protocol nodes run within secure enclaves that protect data integrity and confidentiality.</Callout>
+    
+    <Steps>
+      <Step title="Data Encryption" icon="lock">
+        Data is encrypted before entering the secure enclave.
+      </Step>
+      <Step title="Secure Processing" icon="cpu">
+        Computations occur within the trusted environment.
+      </Step>
+      <Step title="Verified Results" icon="check">
+        Results are cryptographically verified without revealing sensitive data.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Benefits" icon="star">
+    Benefits include enhanced privacy, regulatory compliance, and protection against data breaches.
+  </Tab>
+</Tabs>
+
+## Runtime Off-chain Logic (ROFL)
+
+ROFL enables verifiable off-chain computations that can be attested on-chain. This allows complex computations to be performed outside the blockchain while maintaining cryptographic guarantees of correctness.
+
+<Expandable title="ROFL Applications" default-open="true">
+  ROFL is particularly useful for AI inference, complex financial calculations, and privacy-preserving data analysis.
+  
+  <CodeGroup tabs="Solidity,JavaScript">
+    ```solidity
+    // ROFL contract example
+    contract ROFLApp {
+      function submitComputation(bytes32 inputHash) external {
+        // Submit computation request
+        rofl.submit(inputHash);
+      }
+      
+      function verifyResult(bytes32 resultHash) external {
+        // Verify off-chain computation result
+        require(rofl.verify(resultHash), "Invalid result");
+      }
+    }
+    ```
+    ```javascript
+    // Client-side ROFL interaction
+    const rofl = new ROFLClient();
+    
+    // Submit computation
+    const requestId = await rofl.submitComputation(inputData);
+    
+    // Wait for result
+    const result = await rofl.getResult(requestId);
+    console.log('Computation result:', result);
+    ```
+  </CodeGroup>
+</Expandable>
+
+<ExpandableGroup>
+  <Expandable title="Attestation Process" default-open="false">
+    ROFL computations include cryptographic proofs that attest to the correctness of off-chain execution.
+  </Expandable>
+  <Expandable title="Integration Examples" default-open="false">
+    ROFL can be integrated with existing smart contracts to add privacy-preserving computation capabilities.
+  </Expandable>
+</ExpandableGroup>
+
+## Confidential EVM Compatibility
+
+Oasis Protocol provides a confidential Ethereum Virtual Machine that maintains full compatibility with existing Ethereum tools and applications while adding privacy features.
+
+<Callout kind="tip">Developers can use familiar Ethereum development tools like Hardhat, Truffle, and MetaMask with Oasis Protocol.</Callout>
+
+## Key Concepts Summary
+
+| Concept | Description | Use Case |
+|---------|-------------|----------|
+| Confidential Computing | Private execution of computations | Sensitive data processing |
+| ROFL | Verifiable off-chain logic | Complex AI/ML tasks |
+| Confidential EVM | Privacy-enhanced Ethereum compatibility | dApp development |
+
+## Best Practices
+
+<Steps>
+  <Step title="Choose Appropriate Tools" icon="tool">
+    Select the right Oasis components for your use case.
+  </Step>
+  <Step title="Implement Security Measures" icon="shield">
+    Follow security best practices for confidential applications.
+  </Step>
+  <Step title="Test Thoroughly" icon="check">
+    Test applications in Oasis testnet before mainnet deployment.
+  </Step>
+</Steps>

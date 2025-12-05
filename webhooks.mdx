@@ -1,0 +1,164 @@
+---
+title: Webhooks
+description: Setting up and managing webhooks for real-time notifications from Oasis Protocol events
+---
+
+## Webhooks Overview
+
+Webhooks in Oasis Protocol allow you to receive real-time notifications about blockchain events, transaction confirmations, and confidential computation results. This enables building responsive applications that react to on-chain activity.
+
+<Columns cols={3}>
+  <Card title="Event Notifications" icon="bell" href="#" />
+  <Card title="Transaction Updates" icon="send" href="#" />
+  <Card title="ROFL Results" icon="cpu" href="#" />
+</Columns>
+
+## Setting Up Webhooks
+
+<Steps>
+  <Step title="Create Webhook Endpoint" icon="server">
+    Set up an HTTPS endpoint to receive webhook notifications.
+    
+    ```javascript
+    const express = require('express');
+    const app = express();
+    
+    app.post('/webhook', (req, res) => {
+      const event = req.body;
+      console.log('Received event:', event);
+      res.sendStatus(200);
+    });
+    
+    app.listen(3000);
+    ```
+  </Step>
+  <Step title="Register Webhook" icon="plus">
+    Register your webhook URL with Oasis Protocol.
+    
+    ```javascript
+    const webhook = await oasis.createWebhook({
+      url: 'https://your-app.com/webhook',
+      events: ['transaction.confirmed', 'contract.executed'],
+      secret: 'your-webhook-secret'
+    });
+    ```
+  </Step>
+  <Step title="Verify Setup" icon="check">
+    Test your webhook with a sample event.
+  </Step>
+</Steps>
+
+## Supported Events
+
+<Tabs>
+  <Tab title="Transaction Events" icon="send">
+    Receive notifications for transaction lifecycle events.
+    
+    | Event | Description |
+    |-------|-------------|
+    | `transaction.submitted` | Transaction submitted to network |
+    | `transaction.confirmed` | Transaction confirmed in block |
+    | `transaction.failed` | Transaction execution failed |
+  </Tab>
+  <Tab title="Contract Events" icon="code">
+    Get notified about smart contract executions.
+    
+    | Event | Description |
+    |-------|-------------|
+    | `contract.deployed` | New contract deployed |
+    | `contract.executed` | Contract function called |
+    | `contract.error` | Contract execution error |
+  </Tab>
+  <Tab title="ROFL Events" icon="cpu">
+    Monitor off-chain computation results.
+    
+    | Event | Description |
+    |-------|-------------|
+    | `rofl.requested` | ROFL computation requested |
+    | `rofl.completed` | ROFL computation finished |
+    | `rofl.failed` | ROFL computation error |
+  </Tab>
+</Tabs>
+
+## Webhook Security
+
+<Callout kind="danger">Always verify webhook signatures to ensure authenticity and prevent spoofing attacks.</Callout>
+
+<Expandable title="Signature Verification" default-open="true">
+  Oasis Protocol signs all webhook payloads using HMAC-SHA256 with your secret key.
+  
+  <CodeGroup tabs="JavaScript,Python">
+    ```javascript
+    const crypto = require('crypto');
+    
+    function verifyWebhook(payload, signature, secret) {
+      const expectedSignature = crypto
+        .createHmac('sha256', secret)
+        .update(JSON.stringify(payload))
+        .digest('hex');
+      
+      return crypto.timingSafeEqual(
+        Buffer.from(signature, 'hex'),
+        Buffer.from(expectedSignature, 'hex')
+      );
+    }
+    
+    // In your webhook handler
+    if (verifyWebhook(req.body, req.headers['x-oasis-signature'], secret)) {
+      // Process valid webhook
+    }
+    ```
+    ```python
+    import hmac
+    import hashlib
+    import json
+    
+    def verify_webhook(payload, signature, secret):
+      expected = hmac.new(
+        secret.encode(),
+        json.dumps(payload).encode(),
+        hashlib.sha256
+      ).hexdigest()
+      
+      return hmac.compare_digest(signature, expected)
+    
+    # In your webhook handler
+    if verify_webhook(request.json, request.headers['X-Oasis-Signature'], secret):
+      # Process valid webhook
+    ```
+  </CodeGroup>
+</Expandable>
+
+<ExpandableGroup>
+  <Expandable title="Rate Limiting" default-open="false">
+    Implement rate limiting to handle high-volume event streams.
+  </Expandable>
+  <Expandable title="Retry Logic" default-open="false">
+    Handle webhook delivery failures with exponential backoff.
+  </Expandable>
+</ExpandableGroup>
+
+## Best Practices
+
+<Steps>
+  <Step title="Use HTTPS" icon="lock">
+    Always use HTTPS endpoints for webhook URLs.
+  </Step>
+  <Step title="Validate Signatures" icon="shield">
+    Verify webhook signatures on every request.
+  </Step>
+  <Step title="Handle Failures" icon="alert-triangle">
+    Implement proper error handling and retry logic.
+  </Step>
+  <Step title="Monitor Usage" icon="bar-chart">
+    Track webhook delivery success rates and performance.
+  </Step>
+</Steps>
+
+## Troubleshooting Webhooks
+
+<Callout kind="info">Common webhook issues include network timeouts, signature verification failures, and endpoint unavailability.</Callout>
+
+<Expandable title="Debugging Tips" default-open="false">
+  Use the Oasis developer dashboard to monitor webhook deliveries and view detailed logs.
+</Expandable>

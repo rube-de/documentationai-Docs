@@ -1,0 +1,91 @@
+---
+title: Introduction
+description: Overview of Oasis Protocol and its core capabilities for secure Web3 and AI applications
+---
+
+## Getting Started with Oasis Protocol
+
+Oasis Protocol provides a secure and private platform for Web3 and AI applications. It focuses on confidentiality, scalability, and interoperability, enabling the creation of a better web. With a confidential Ethereum Virtual Machine (EVM) that's secure and interoperable by design, plus verifiable off-chain compute via ROFL, Oasis empowers developers to build decentralized applications with enhanced privacy.
+
+Oasis Protocol stands out by integrating confidentiality into the core blockchain infrastructure. This approach ensures that sensitive data remains protected while maintaining full compatibility with existing Ethereum tools and applications.
+
+<Columns cols={3}>
+  <Card title="Confidential EVM" icon="shield" href="#" />
+  <Card title="ROFL Compute" icon="cpu" href="#" />
+  <Card title="Interoperability" icon="globe" href="#" />
+</Columns>
+
+## Core Features
+
+Oasis Protocol introduces several innovative features that set it apart in the Web3 landscape. The confidential EVM allows smart contracts to execute private computations while maintaining public verifiability. This is achieved through advanced cryptographic techniques that protect sensitive data without compromising blockchain transparency.
+
+<Tabs>
+  <Tab title="Confidentiality" icon="lock">
+    Confidentiality is at the heart of Oasis Protocol. All computations can be performed privately, ensuring that sensitive business logic and user data remain protected from unauthorized access.
+    
+    <Callout kind="info">Confidentiality features are available across all Oasis network components, from basic transactions to complex smart contract executions.</Callout>
+  </Tab>
+  <Tab title="Scalability" icon="trending-up">
+    Oasis Protocol achieves high scalability through its modular architecture and optimized consensus mechanisms. This allows for thousands of transactions per second while maintaining security guarantees.
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+<Expandable title="Web3 Applications" default-open="false">
+  Web3 applications benefit from Oasis Protocol's confidential computing capabilities. Decentralized finance protocols can execute private trades, gaming applications can protect user assets, and social platforms can ensure data privacy.
+  
+  <Steps>
+    <Step title="Deploy Contract" icon="code">
+      Deploy your smart contract to the Oasis confidential EVM.
+      
+      ````javascript
+      const contract = new web3.eth.Contract(abi);
+      contract.deploy({
+        data: bytecode,
+        arguments: [param1, param2]
+      });
+      ````
+    </Step>
+    <Step title="Execute Private Transaction" icon="send">
+      Execute transactions with built-in confidentiality.
+    </Step>
+  </Steps>
+</Expandable>
+
+<ExpandableGroup>
+  <Expandable title="AI Applications" default-open="false">
+    AI applications leverage ROFL for verifiable off-chain computations. This enables privacy-preserving machine learning models and confidential data analysis.
+  </Expandable>
+  <Expandable title="Interoperability" default-open="false">
+    Oasis Protocol seamlessly integrates with existing Ethereum infrastructure, allowing developers to migrate applications with minimal changes.
+  </Expandable>
+</ExpandableGroup>
+
+## Getting Help
+
+<Callout kind="tip">For developers getting started with Oasis Protocol, we recommend exploring our documentation sections on core concepts, API usage, and integration guides.</Callout>
+
+<CodeGroup tabs="JavaScript,Python">
+  ```javascript
+  // Initialize Oasis SDK
+  const oasis = new OasisSDK({
+    network: 'mainnet',
+    confidential: true
+  });
+  
+  // Deploy confidential contract
+  const contractAddress = await oasis.deployContract(bytecode);
+  console.log('Contract deployed at:', contractAddress);
+  ```
+  ```python
+  # Initialize Oasis client
+  from oasis_sdk import OasisClient
+  
+  client = OasisClient(network='mainnet', confidential=True)
+  
+  # Deploy confidential contract
+  contract_addr = client.deploy_contract(bytecode)
+  print(f'Contract deployed at: {contract_addr}')
+  ```
+</CodeGroup>

@@ -1,0 +1,208 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Oasis Protocol API
+  license:
+    name: MIT
+servers:
+  - url: https://api.oasis.io/v1
+paths:
+  /blocks:
+    get:
+      summary: Retrieve a list of recent blocks from the Oasis blockchain
+      operationId: getBlocks
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of blocks to return, up to 100
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Successful retrieval of block list
+          headers:
+            x-next:
+              description: Link to next page of results
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blocks'
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Submit a new block proposal to the Oasis network
+      operationId: submitBlock
+      responses:
+        201:
+          description: Block proposal accepted for processing
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /blocks/{blockId}:
+    get:
+      summary: Retrieve detailed information about a specific block by its identifier
+      operationId: getBlockById
+      parameters:
+        - name: blockId
+          in: path
+          required: true
+          description: Unique identifier of the block to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          description: Detailed block information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blocks'
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /transactions:
+    get:
+      summary: List recent transactions across the Oasis network
+      operationId: getTransactions
+      parameters:
+        - name: limit
+          in: query
+          description: Number of transactions to return, maximum 100
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Transaction list retrieved successfully
+          headers:
+            x-next:
+              description: Link for pagination to next set of results
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transactions'
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Broadcast a new transaction to the Oasis network
+      operationId: submitTransaction
+      responses:
+        201:
+          description: Transaction accepted for broadcasting
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts/{accountId}:
+    get:
+      summary: Get account details including balance and transaction history
+      operationId: getAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          description: Account identifier to retrieve information for
+          schema:
+            type: string
+      responses:
+        200:
+          description: Account information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accounts'
+        default:
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Block:
+      required:
+        - id
+        - height
+      properties:
+        id:
+          type: string
+        height:
+          type: integer
+          format: int64
+        transactions:
+          type: array
+          items:
+            type: string
+    Blocks:
+      type: array
+      items:
+        $ref: '#/components/schemas/Block'
+    Transaction:
+      required:
+        - id
+        - from
+        - to
+      properties:
+        id:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        amount:
+          type: string
+        confidential:
+          type: boolean
+    Transactions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Transaction'
+    Account:
+      required:
+        - id
+        - balance
+      properties:
+        id:
+          type: string
+        balance:
+          type: string
+        transactions:
+          type: array
+          items:
+            type: string
+    Accounts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Account'
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
